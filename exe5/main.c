@@ -65,19 +65,19 @@ void btn_task(void* p) {
         if (xQueueReceive(xQueueBtn, &gpio,  pdMS_TO_TICKS(100))){
             
             if (gpio == 1){
-                printf("Liguei o botão vermelho \n");
+                // printf("Liguei o botão vermelho \n");
                 xSemaphoreGive(xSemaphoreR);
 
             }
 
             else if (gpio == 2){
-                printf("Liguei no botão amarelo \n");
+                // printf("Liguei no botão amarelo \n");
                 xSemaphoreGive(xSemaphoreY);
                 vTaskDelay(pdMS_TO_TICKS(1));
             }
 
         }
-        vTaskDelay(pdMS_TO_TICKS(10));
+        vTaskDelay(pdMS_TO_TICKS(100));
 
     }
 }
@@ -86,7 +86,7 @@ void led_r_task(void *p) {
     gpio_init(LED_PIN_R);
     gpio_set_dir(LED_PIN_R, GPIO_OUT);
 
-    printf("cai aqui 1 \n");
+    // printf("cai aqui 1 \n");
 
     int delay = 100;
     int led_pisca_R = 0;
@@ -94,13 +94,13 @@ void led_r_task(void *p) {
     while (true) {
 
         if (xSemaphoreTake(xSemaphoreR, pdMS_TO_TICKS(500)) == pdTRUE) {
-            printf("cai aqui 2 \n");
+            // printf("cai aqui 2 \n");
             led_pisca_R = !led_pisca_R;
 
         }
 
         if(led_pisca_R){
-            printf("Clique mais uma vez para desligar (red) \n");
+            // printf("Clique mais uma vez para desligar (red) \n");
             gpio_put(LED_PIN_R, 1);
             vTaskDelay(pdMS_TO_TICKS(delay));
             gpio_put(LED_PIN_R, 0);
@@ -108,7 +108,7 @@ void led_r_task(void *p) {
         }
 
         else{
-            printf("Red desligado");
+            // printf("Red desligado \n");
             gpio_put(LED_PIN_R, 0);
             vTaskDelay(pdMS_TO_TICKS(delay));
         }
@@ -127,13 +127,13 @@ void led_y_task(void *p) {
     while (true) {
 
         if (xSemaphoreTake(xSemaphoreY, pdMS_TO_TICKS(500)) == pdTRUE) {
-            printf("cai aqui 2 \n");
+            // printf("cai aqui 2 \n");
             led_pisca_Y = !led_pisca_Y;
 
         }
 
         if(led_pisca_Y){
-            printf("Clique mais uma vez para desligar (yellow) \n");
+            // printf("Clique mais uma vez para desligar (yellow) \n");
             gpio_put(LED_PIN_Y, 1);
             vTaskDelay(pdMS_TO_TICKS(delay));
             gpio_put(LED_PIN_Y, 0);
@@ -141,7 +141,7 @@ void led_y_task(void *p) {
         }
         
         else{
-            printf("Yellow desligado");
+            // printf("Yellow desligado \n");
             gpio_put(LED_PIN_Y, 0);
             vTaskDelay(pdMS_TO_TICKS(delay));
         }
