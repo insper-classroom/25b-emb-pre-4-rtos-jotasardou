@@ -155,7 +155,7 @@ int main() {
 
     xSemaphoreR = xSemaphoreCreateBinary();
     xSemaphoreY = xSemaphoreCreateBinary();
-    xQueueBtn = xQueueCreate(32, sizeof(char) );
+    xQueueBtn = xQueueCreate(32, sizeof(int) );
 
     xTaskCreate(btn_task, "BTN_Task 1", 256, NULL, 1, NULL);
     xTaskCreate(led_r_task,"LED_R_Task",256, NULL, 1, NULL);
