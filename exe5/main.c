@@ -121,7 +121,7 @@ void led_y_task(void *p) {
     gpio_init(LED_PIN_Y);
     gpio_set_dir(LED_PIN_Y, GPIO_OUT);
 
-    int delay = 0;
+    int delay = 100;
     int led_pisca_Y = 0;
 
     while (true) {
