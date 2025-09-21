@@ -25,8 +25,8 @@ const int LED_PIN_Y = 10;
 
 QueueHandle_t xQueueBtn;
 
-SemaphoreHandle_t xSemaphoreR;
-SemaphoreHandle_t xSemaphoreY;
+SemaphoreHandle_t xSemaphoreLedR;
+SemaphoreHandle_t xSemaphoreLedY;
 
 void btn_callback(uint gpio, uint32_t events) {
     int botao;
@@ -66,13 +66,13 @@ void btn_task(void* p) {
             
             if (gpio == 1){
                 // printf("Liguei o botão vermelho \n");
-                xSemaphoreGive(xSemaphoreR);
+                xSemaphoreGive(xSemaphoreLedR);
 
             }
 
             else if (gpio == 2){
                 // printf("Liguei no botão amarelo \n");
-                xSemaphoreGive(xSemaphoreY);
+                xSemaphoreGive(xSemaphoreLedY);
                 vTaskDelay(pdMS_TO_TICKS(1));
             }
 
@@ -93,7 +93,7 @@ void led_r_task(void *p) {
 
     while (true) {
 
-        if (xSemaphoreTake(xSemaphoreR, pdMS_TO_TICKS(500)) == pdTRUE) {
+        if (xSemaphoreTake(xSemaphoreLedR, pdMS_TO_TICKS(500)) == pdTRUE) {
             // printf("cai aqui 2 \n");
             led_pisca_R = !led_pisca_R;
 
@@ -126,7 +126,7 @@ void led_y_task(void *p) {
 
     while (true) {
 
-        if (xSemaphoreTake(xSemaphoreY, pdMS_TO_TICKS(500)) == pdTRUE) {
+        if (xSemaphoreTake(xSemaphoreLedY, pdMS_TO_TICKS(500)) == pdTRUE) {
             // printf("cai aqui 2 \n");
             led_pisca_Y = !led_pisca_Y;
 
@@ -153,8 +153,8 @@ void led_y_task(void *p) {
 int main() {
     stdio_init_all();
 
-    xSemaphoreR = xSemaphoreCreateBinary();
-    xSemaphoreY = xSemaphoreCreateBinary();
+    xSemaphoreLedR = xSemaphoreCreateBinary();
+    xSemaphoreLedY = xSemaphoreCreateBinary();
     xQueueBtn = xQueueCreate(32, sizeof(int) );
 
     xTaskCreate(btn_task, "BTN_Task 1", 256, NULL, 1, NULL);
